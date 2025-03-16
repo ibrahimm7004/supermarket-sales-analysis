@@ -49,17 +49,11 @@ Once frequent itemsets were identified, association rule mining was applied usin
 #### **Key Formulae:**
 
 - **Confidence:** Measures the likelihood of purchasing B given that A was purchased.
-  $$
-  Confidence(A \rightarrow B) = \frac{Support(A \cup B)}{Support(A)}
-  $$
+  $$ Confidence(A \rightarrow B) = \frac{Support(A \cup B)}{Support(A)} $$
 - **Lift:** Determines how much more likely two products are bought together than independently.
-  $$
-  Lift(A \rightarrow B) = \frac{Support(A \cup B)}{Support(A) \times Support(B)}
-  $$
+  $$ Lift(A \rightarrow B) = \frac{Support(A \cup B)}{Support(A) \times Support(B)} $$
 - **Leverage:** Measures the difference between observed and expected co-occurrence.
-  $$
-  Leverage(A \rightarrow B) = Support(A \cup B) - Support(A) \times Support(B)
-  $$
+  $$ Leverage(A \rightarrow B) = Support(A \cup B) - Support(A) \times Support(B) $$
 
 ### **3. Strongest Association Rules**
 
