@@ -6,10 +6,10 @@ This project explores customer behavior in supermarket sales using Python-based 
 
 ## Repository Contents
 
-- **Jupyter Notebook**: Contains the Python code used for data mining and analysis (![Code File](/code.ipynb)).
-- **Research Report (PDF)**: The final research document with insights, analysis, and conclusions (![Report](/Research-Report.pdf)).
+- **Jupyter Notebook**: Contains the Python code used for data mining and analysis ([Notebook](code.ipynb)).
+- **Research Report (PDF)**: The final research document with insights, analysis, and conclusions ([Report](Research-Report.pdf)).
 - **LaTeX Files**: Resources for formatting research papers using LaTeX.
-- **Dataset**: The supermarket sales dataset located in the `additional_files` directory ([supermarket-sales.csv](additional_files/supermarket_sales.csv)).
+- **Dataset**: The supermarket sales dataset located in the `additional_files` directory ([supermarket-sales.csv](additional_files/supermarket-sales.csv)).
 
 ## Key Insights and Visualizations
 
@@ -136,7 +136,7 @@ This project provides deep insights into supermarket purchasing patterns. By lev
 ## Acknowledgments
 
 - **Libraries Used**: Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, Mlxtend, Statsmodels.
-- **Dataset Source**: Included within the repository ![here](additional_files/supermarket_sales.csv).
+- **Dataset Source**: Included within the repository [here](additional_files/supermarket-sales.csv).
 
 ## License
 
