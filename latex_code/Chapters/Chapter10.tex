@@ -1,0 +1,108 @@
+% Chapter 9
+
+\chapter{Regression} % Main chapter title
+
+\label{Chapter10} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+All previous preprocessing steps remain the same, the only difference is the exclusion of the process of binning since we need our target variable to be continuous for regression. I used the same target variable, ‘Total’. As I did with classification, I applied multiple models here too, since the process after preprocessing is quite short and straightforward. Applying multiple models helps gain useful insight into the problem, and it becomes easier to choose a good model for predictions.
+
+\lhead{Chapter 10. \emph{Regression}} % This is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+
+\section{Evaluation Metrics:}
+
+Unlike classification problems, where metrics like accuracy, precision, and recall are common, regression problems involve predicting continuous numerical values. Here, we justify the selection of Mean Squared Error (MSE), Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), R-squared (R2), Adjusted R-squared (Adjusted R2), and Explained Variance as evaluation metrics.
+
+\begin{itemize}
+\item Mean Squared Error (MSE):
+\newline 
+MSE measures the average of the squared differences between predicted and actual values. It amplifies the impact of larger errors, providing a comprehensive view of overall model accuracy.
+\item Root Mean Squared Error (RMSE):
+\newline 
+RMSE is the square root of MSE, providing an interpretable scale similar to the target variable. It helps in understanding the typical magnitude of errors in the predicted values.
+\item Mean Absolute Error (MAE):
+\newline 
+MAE calculates the average absolute differences between predicted and actual values. It offers a more straightforward interpretation, treating all errors equally.
+\item R-squared (R2):
+\newline 
+R2 quantifies the proportion of variance in the target variable explained by the model. A higher R2 indicates a better fit, with values closer to 1 indicating a stronger predictive capability.
+\item Adjusted R-squared (Adjusted R2):
+\newline 
+Adjusted R2 adjusts for the number of predictors in the model, providing a more accurate reflection of model fit. It penalizes the addition of irrelevant predictors, addressing potential overfitting.
+\item Explained Variance:
+Explained Variance measures the proportion of variance in the target variable that the model accounts for. It complements R2, offering another perspective on the model's explanatory power.
+
+\end{itemize}
+
+\subsection{Why do we use different metrics for regression?}
+\begin{itemize}
+
+\item Continuous Prediction:
+\newline
+In regression, the goal is to predict numerical outcomes, making it inappropriate to use classification metrics designed for discrete class assignments.
+\item
+Quantitative Error Assessment:
+\newline 
+Regression metrics focus on quantifying the extent of errors between predicted and actual values, providing a nuanced understanding of model performance.
+
+\end{itemize}
+
+
+% ---------------------------------------------------------------------------------------
+
+\section{Applying Regression:}
+I made use of 5 different models, and 6 evaluation metrics, to help understand and evaluate the problem effectively. Here are the results:
+
+\begin{table}[htbp]
+    \centering
+    \begin{adjustbox}{max width=\textwidth} % Fit the table to the page width
+        \rowcolors{1}{green!20}{white} % Alternate row colors starting from the second row
+        \rowcolors{2}{green!30}{white} % Slightly darker header row
+        \begin{tabular}{|>{\columncolor{green!50}}c|c|c|c|c|c|c|}
+            \hline
+            \rowcolor{green!50} % Slightly darker header row color
+            \textbf{Model} & \textbf{MSE} & \textbf{RMSE} & \textbf{MAE} & \textbf{R2} & \textbf{Adjusted R2} & \textbf{Explained Variance} \\
+            \hline
+            \cellcolor{green!30}Linear Regression & 405.263702 & 20.131162 & 14.938315 & 0.993771 & 0.993263 & 0.993788\\
+            \cellcolor{green!30}Ridge &	405.359727 & 20.133547 & 14.947561 & 0.993769 &	0.993262 &	0.993787 \\
+            \cellcolor{green!30}ElasticNet & 1366.993951 & 36.972881 & 27.411452 &	0.978989 &	0.977276 & 0.979146\\
+            \cellcolor{green!30}Random Forest Regressor	& 302.036030 & 17.379184 & 13.506950 & 	0.995358 & 0.994979 & 0.995358\\
+            \cellcolor{green!30}Decision Tree Regressor	& 637.420000 & 25.247178 & 19.150000 &	0.990203 & 0.989404 & 0.990238 \\
+            \hline
+        \end{tabular}
+    \end{adjustbox}
+    % \caption{7 by 5 Table with alternating light green rows and a slightly darker green header}
+    \label{tab:7x5_table}
+\end{table}
+
+\section{Analysis}
+\begin{itemize}
+\item Linear Regression and Ridge Regression:
+\newline
+Both linear models (Linear Regression and Ridge Regression) exhibit excellent performance with low MSE, RMSE, and MAE, indicating a strong fit to the data.
+The R² and Adjusted R² values are close to 1, suggesting that these models explain a high proportion of the variance in the target variable.
+\item ElasticNet:
+\newline
+The ElasticNet model, while still performing reasonably well, shows higher errors compared to linear models. This could be due to the regularization applied, impacting the flexibility of the model.
+\item Random Forest Regression:
+\newline 
+Random Forest Regression stands out as the top-performing model, with the lowest MSE, RMSE, and MAE. It demonstrates superior predictive accuracy and robustness, capturing complex relationships in the data.
+\item Decision Tree Regression:
+\newline
+Decision Tree Regression performs well, but not as accurately as Random Forest. It exhibits slightly higher errors and lower R² values, indicating a lesser ability to explain the variance in the target variable.
+\end{itemize}
+
+\section{Conclusion}
+
+Random Forest Regressor appears to be the most suitable for predicting sales and customer spending, providing a good balance between accuracy and generalization. The linear models (Linear Regression and Ridge Regression) also perform admirably. 
+
+
+
+
+
+
+
+
+
+

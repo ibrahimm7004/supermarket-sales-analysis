@@ -1,0 +1,170 @@
+% Chapter 1
+
+\chapter{Sequential Pattern Mining} % Main chapter title
+
+\label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{Chapter 7. \emph{Sequential Pattern Mining}} % This is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+
+\section{Relevance to this project }
+
+Sequential Pattern Mining is a data mining technique that aims to discover patterns in sequential data, such as sequences of events or itemsets in a transactional dataset. In our project, sequential pattern mining can reveal interesting associations and orderings of itemsets across transactions and time periods. It may help identify frequent sequences of itemsets in the dataset. Patterns can reveal customer buying behavior, such as common sequences of products purchased together over time. 
+\newline 
+The goal of sequential pattern mining is to discover frequent sequences of items within a dataset. In the context of retail or supermarket sales, this could reveal common patterns of items that customers tend to purchase together, providing insights into customer behavior over time. 
+\newline 
+I decided to use a support value of 0.1 for all algorithms that I used.
+
+\section{How is this different from using Apriori or FP Growth?}
+
+\begin{table}[htbp]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+        \rowcolors{1}{green!20}{white}
+        \begin{tabular}{|>{\columncolor{green!50}}c|c|c|}
+            \hline
+            \rowcolor{green!70}
+            \textbf{Feature} & \textbf{Sequential Pattern Mining} & \textbf{Apriori Algorithm} \\
+            \hline
+            Focus & Temporal order of events or itemsets & Frequent itemsets without order concern \\
+            Goal & Discover frequent sequences of items & Discover frequent sets of items \\
+            Order Sensitivity & Emphasizes order sensitivity & Not inherently order-sensitive \\
+            Data Structure & Utilizes sequence databases or similar & Utilizes itemsets and transaction data \\
+            Use Cases & Analyzing time-ordered data (e.g., transactions over time) & Finding associations in static datasets \\
+            Example Use Case & Identifying common sequences of products purchased over time & Identifying frequent sets of products irrespective of order\\
+            \hline
+        \end{tabular}
+    \end{adjustbox}
+    % \caption{Comparison of Sequential Pattern Mining and Apriori Algorithm}
+    \label{tab:sequential_apriori_comparison}
+\end{table}
+
+\section{PrefixSpan:}
+
+\subsection{How does it work?}
+PrefixSpan employs a depth-first search strategy to explore the space of possible sequential patterns. It uses a divide-and-conquer approach to efficiently find frequent sequences without generating all possible combinations.
+\newline 
+\newline
+The algorithm starts by considering each unique item in the dataset as a prefix and explores its extensions. For each prefix, it identifies the occurrences of that prefix in the dataset and extends it to find longer sequential patterns.
+\newline
+\newline
+The recursion is a key feature of PrefixSpan. For each identified prefix, the algorithm recursively projects the remaining sequences and searches for frequent patterns in the projected sequences. This recursive approach allows PrefixSpan to efficiently discover sequential patterns of varying lengths.
+
+
+\subsection{Applying it via code:} 
+I made use of the list of lists I had already computed in a previous task, as the input to this algorithm. Following is the main line in which I applied PrefixSpan:
+\begin{lstlisting}[language=Python, frame=none]
+patterns = PrefixSpan(transactions_list).frequent(0.1, closed=True)
+\end{lstlisting}
+The frequent method is applied to the PrefixSpan instance. It discovers frequent sequential patterns in the dataset based on a minimum support threshold of 0.1 (10\%). The closed=True parameter indicates that closed sequential patterns should be included in the results.
+
+The discovered patterns are then iterated over. This helps inspect and analyze the frequent sequential patterns in your dataset.
+
+\subsection{Result and Analysis:}
+\newline
+\newline 
+\textbf{Output}
+(1, ['Health', 'beauty'])
+\newline 
+(1, ['Home', 'lifestyle'])
+\newline 
+(1, ['Sports', 'travel'])
+\newline 
+(1, ['Electronic accessories'])
+\newline 
+(1, ['Food', 'beverages'])
+\newline
+(1, ['Fashion accessories'])
+\newline 
+\newline 
+These patterns signify sequences of itemsets that frequently occur together in transactions. The support value indicates how often each sequence appears in the dataset. Since all support values are 1 here, it indicates that each sequence occurred in exactly one transaction, meaning they are not very common or frequent.
+
+%----------------------------------------------------------------------------------------
+
+\section{GSP: Generalized Sequential Patterns:}
+
+\subsection{How does it work?}
+GSP employs a sliding window approach to traverse the sequence of events systematically. This involves moving a fixed-size window or 'frame' across a sequence of data points, analyzing the data within the window at each position. The window slides through the sequence, typically one step at a time, capturing a subset of the data at each step.
+\newline 
+GSP employs a breadth-first search strategy to explore the space of potential sequential patterns. GSP initially identifies frequent individual items and progressively extends them to discover longer patterns. The algorithm uses a candidate generation and pruning mechanism to efficiently identify patterns that meet the minimum support threshold. GSP iterates through the sequence, adjusting the size of the sliding window dynamically to capture patterns of varying lengths.
+
+\subsection{Applying it via code:}
+In the implementation of GSP, I utilized the seqmining library to discover frequent sequential patterns. The freq_seq_enum method is applied to find sequences with a minimum support threshold of 0.1 (10\%). The results are then iterated over, allowing for inspection and analysis of the frequent sequential patterns in the dataset.
+
+\subsection{Result and Analysis:}
+\textbf{Output:}
+\newline
+(('Food',), 1)
+\newline
+(('Health',), 1)
+\newline
+(('travel',), 1)
+\newline
+(('Fashion accessories',), 1)
+\newline
+(('Health', 'beauty'), 1)
+\newline
+(('Food', 'beverages'), 1)
+\newline
+(('Home',), 1)
+\newline
+(('lifestyle',), 1)
+\newline
+(('Electronic accessories',), 1)
+\newline
+(('beverages',), 1)
+\newline
+(('Sports',), 1)
+\newline
+(('Sports', 'travel'), 1)
+\newline
+(('beauty',), 1)
+\newline
+(('Home', 'lifestyle'), 1)
+\newline 
+\newline 
+The support count of 1 for each pattern indicates that the identified sequential patterns occur infrequently in the dataset. This might suggest that customers exhibit varied and unique purchasing patterns, and there isn't a dominant sequential pattern that applies to a large portion of the dataset.
+
+
+\section{Eclat Algorithm (Equivalence Class Transformation):}
+
+\subsection{How does it work?}
+Eclat utilizes a vertical data representation, where each column corresponds to a unique item, and each row represents a transaction. It focuses on finding frequent itemsets by constructing equivalence classes for each item. Equivalence refers to a state of being equal or having the same value. These equivalence classes consist of sets of transactions containing the respective item. Eclat then intersects these equivalence classes to discover frequent itemsets of larger sizes. Its recursive approach ensures the discovery of progressively longer patterns. The vertical data representation and intersection-based technique contribute to Eclat's efficiency in mining frequent itemsets in datasets.
+
+\subsection{Applying it via code:}
+For Eclat, I employed the pyECLAT library, creating a DataFrame from the list of transactions. The ECLAT class is then used to find frequent itemsets with a minimum support of 0.1. The discovered itemsets are iterated over, facilitating an examination of the frequent itemsets in the dataset.
+
+\subsection{Result and Analysis:}
+\textbf{Output:}
+'beverages': [4], 'Food': [4], 'Sports': [2], 'lifestyle': [1], 'Home': [1], 'Electronic accessories': [3], 'beauty': [0], 'Fashion accessories': [5], 'travel': [2], 'Health': [0], 'beverages & Food': [4], 'Sports & travel': [2], 'lifestyle & Home': [1], 'beauty & Health': [0]}
+{'beverages': 0.16666666666666666, 'Food': 0.16666666666666666, 'Sports': 0.16666666666666666, 'lifestyle': 0.16666666666666666, 'Home': 0.16666666666666666, 'Electronic accessories': 0.16666666666666666, 'beauty': 0.16666666666666666, 'Fashion accessories': 0.16666666666666666, 'travel': 0.16666666666666666, 'Health': 0.16666666666666666, 'beverages & Food': 0.16666666666666666, 'Sports & travel': 0.16666666666666666, 'lifestyle & Home': 0.16666666666666666, 'beauty & Health': 0.16666666666666666}
+\newline 
+\newline 
+The diversity in item combinations and the uniform distribution of relative support values across different items imply that customers exhibit varied purchasing behaviors. There isn't a dominant sequential pattern or a specific set of items that consistently appear together in the dataset.
+
+
+% -------------------------------------------------------------------------------------------
+\section{Summarization of Key Differences}
+
+\begin{table}[htbp]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+    \rowcolors{1}{pink!20}{white}
+    \begin{tabular}{|>{\columncolor{pink!50}}c|c|c|}
+        \hline
+        \rowcolor{pink!70}
+        \textbf{Algorithm} & \textbf{Output (Sample)} & \textbf{Key Differences and Inferences} \\
+        \hline
+        PrefixSpan & ('Health', 'beauty')('Food', 'beverages')
+        & Occurrence is infrequent, suggesting unique purchasing patterns; no dominant sequential pattern. \\
+        GSP & ('Food')('Sports', 'travel') & Patterns occur infrequently; no clear dominant sequential pattern in the dataset. \\
+        Eclat & {'beverages': [4], 'Food': [4], 'Sports': [2]}
+{'beverages': 0.17, 'Food': 0.17, 'Sports': 0.17}
+& Diversity in item combinations, uniform support distribution; no dominant sequential pattern identified. \\
+        \hline
+    \end{tabular}
+    \end{adjustbox}
+    % \caption{4 by 3 Table with Pink Alternating Row Colors}
+    \label{tab:pink_table}
+\end{table}

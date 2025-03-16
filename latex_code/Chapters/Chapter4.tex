@@ -1,0 +1,169 @@
+% Chapter 4
+
+\chapter{Association Rule Mining} % Main chapter title
+
+\label{Chapter4} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{Chapter 4. \emph{Association Rule Mining}} % This is for the header on each page - perhaps a shortened title
+Apriori cannot be applied directly to the dataset. There are certain processes a dataset must go through before we can apply the algorithm. I chose to manually prepare the data to better understand and document the entire process.
+%----------------------------------------------------------------------------------------
+
+\section{Data preparation }
+
+\subsection{Creating a list of lists}
+First, I selected the ‘Product line’ feature from the dataset, as this was going to be the focus when implementing Apriori on the dataset. I split each element in the 'Product line' column into a list of substrings using the string ' and ' as the separator. After this, I used the Pandas function ‘.explode’ to transform each element of a list-like to a row, replicating the index values. Finally, I converted the Pandas Series to a list. All these steps were performed in this single line of code:
+\begin{lstlisting}[language=Python, frame=none]
+exploded_list = apriori_df['Product line'].str.split(' and ').explode().tolist()
+\end{lstlisting}
+
+\subsection{Grouping products by count}
+I used the list of lists to create a Pandas DataFrame, and then added a new column ‘Count’ to this DataFrame. Using ‘groupby’ and ‘transform’, I was able to count the frequency of each product. Finally, I removed any duplicates to retain only the unique products ad their corresponding counts.
+
+\subsection{Encoding the DataFrame using Transaction Encoder}
+The transaction encoder is also part of the mlxtend library and can be imported and directly used in Python to encode features based on their frequencies. Using the ‘fit’ method in ‘tx.fit’ along with ‘transform’, I was able to transform the data into a binary encoded array. 2 main changes made after this are to convert the array into a DataFrame, and to convert the binary values to an integer form (0s and 1s). Now, the dataset is finally ready as input to the Apriori algorithm.
+
+\section{Frequent Itemsets}
+
+\subsection{Calculation}
+
+‘Apriori’ is a function from the \verb|mlxtend.frequent_patterns|’ module, specifically designed for implementing the Apriori algorithm. I made use of it at this stage to apply the apriori algorithm to our dataset, with the objective of forming frequent itemsets. What exactly are frequent itemsets? Put simple, they are sets of items that appear together frequently in a dataset. Another term I’ll use here is minimum support, which measures the proportion of transactions in which an itemset occurs in a dataset. I set the ‘\verb|min_support|’ parameter to 0.01 (1\%), which specifies the minimum support threshold. Here, the ‘\verb|min_support|’ parameter filters out infrequent itemsets, considering only those that occur with a frequency greater than or equal to 0.01.
+% ============================
+\subsection{Choosing Minimum Support}
+To answer this question, we must consider the ‘products by their counts’ DataFrame that I formed while preparing the data:
+
+\begin{table}[htbp]
+    \centering
+    \rowcolors{1}{blue!20}{white}
+    \begin{tabular}{|>{\columncolor{blue!50}}c|c|}
+        \hline
+        \rowcolor{blue!50}
+        \textbf{Product} & \textbf{Count} \\
+        \hline
+        Health & 152 \\
+        Beauty & 152 \\
+        Electronic accessories & 170 \\
+        Home & 160 \\
+        Lifestyle & 160 \\
+        Sports & 166 \\
+        Travel & 166 \\
+        Food & 174 \\
+        Beverages & 174 \\
+        Fashion Accessories & 178 \\
+        \hline
+    \end{tabular}
+    % \caption{there were no duplicates or outliers}
+    \label{tab:alternating_colors}
+\end{table}
+
+The counts for each product line indicate that the dataset covers a variety of product lines, and there's a reasonable distribution of counts across different categories. Setting a minsup of 0.01 means that we are considering itemsets that appear in at least 1\% of the transactions. Since the entire dataset consists of a total of 1000 rows, this translates to a minimum count of 10 transactions. Considering that the lowest count is 152, a minsup of 0.01 seems reasonable as it is significantly above the minimum count of any individual product line, implying that we are capturing product lines which are relatively common in the dataset.
+\newline
+The choice of 0.01 strikes a balance between generality and specificity. It's low enough to capture patterns that occur frequently but high enough to avoid capturing extremely specific patterns. A lower minsup also allows for the discovery of a larger number of frequent itemsets, providing a more general view of patterns in the data.
+% ===================================================================================
+
+
+\subsection{The frequent itemset produced}
+The resultant DataFrame (\verb|frequent_itemsets|) contains frequent itemsets along with their support values.
+
+\begin{table}[htbp]
+    \centering
+    \rowcolors{1}{blue!20}{white}
+    \begin{tabular}{|>{\columncolor{blue!50}}c|c|}
+        \hline
+        \rowcolor{blue!50}
+        \textbf{Support} & \textbf{Itemsets} \\
+        \hline
+        0.166667 & (Electronic accessories) \\
+        0.166667 & (Fashion accessories) \\
+        0.166667 & (Food) \\
+        0.166667 & (Health) \\
+        0.166667 & (Home) \\
+        0.166667 & (Sports) \\
+        0.166667 & (Beauty) \\
+        0.166667 & (Beverages) \\
+        0.166667 & (Lifestyle) \\
+        0.166667 & (Beverages, Food) \\
+        0.166667 & (Health, Beauty) \\
+        0.166667 & (Lifestyle, Home) \\
+        0.166667 & (Travel, Sports) \\
+        \hline
+    \end{tabular}
+    % \caption{there were no duplicates or outliers}
+    \label{tab:alternating_colors}
+\end{table}
+
+
+The itemsets of individual products (Electronic accessories), (Fashion accessories), (Food), (Health), (Home), (Sports), (beauty), (beverages), (lifestyle), and (travel) all have a support of 0.166667 (16.67\%). This means that each of these product lines individually appears in approximately 16.67\% of the transactions.
+\newline
+As for 2-itemsets: (beverages, Food), (Health, beauty), (lifestyle, Home), and (travel, Sports); each have a support of 0.166667 (16.67\%), indicating that these pairs of product lines occur together in approximately 16.67\% of the transactions.
+
+
+% If you are writing a thesis (or will be in the future) and its subject is technical or mathematical (though it doesn't have to be), then creating it in \LaTeX{} is highly recommended as a way to make sure you can just get down to the essential writing without having to worry over formatting or wasting time arguing with your word processor.
+
+% \LaTeX{} is easily able to professionally typeset documents that run to hundreds or thousands of pages long. With simple mark-up commands, it automatically sets out the table of contents, margins, page headers and footers and keeps the formatting consistent and beautiful. One of its main strengths is the way it can easily typeset mathematics, even \emph{heavy} mathematics. Even if those equations are the most horribly twisted and most difficult mathematical problems that can only be solved on a super-computer, you can at least count on \LaTeX{} to make them look stunning.
+
+%----------------------------------------------------------------------------------------
+
+\section{Conducting Association Rule Mining}
+
+\subsection{Applying association rule mining:}
+The \verb|‘association_rules’| function is from the \verb|‘mlxtend.frequent_patterns’| module, and it is used to generate association rules from frequent itemsets. 
+\begin{itemize}
+    \item \verb|metric="confidence"|: Specifies the metric to be used for evaluating the generated rules. In this case, I chose confidence. 
+    \item \verb|‘min_threshold=0.01’|: Sets a minimum threshold for the chosen metric. Rules with a confidence value above this threshold will be considered.
+\end{itemize}
+
+\subsection{Setting the confidence}
+\subsubsection{What is confidence?}
+Confidence is a measure used in association rule mining to quantify the likelihood that the occurrence of the antecedent (the left-hand side of the rule) implies the occurrence of the consequent (the right-hand side). It is defined as the ratio of the support of the combined antecedent and consequent to the support of the antecedent alone. Mathematically, it can be expressed as:
+\begin{equation}
+\text{Confidence}(A \rightarrow B) = \frac{\text{Support}(A \cup B)}{\text{Support}(A)}
+\end{equation}
+where A is the antecedent and B is the consequent.
+
+\subsubsection{Choosing Minimum Confidence}
+Setting a low \verb|min_confidence| threshold, such as 0.01, allows for the discovery of a broader range of association rules. It strikes a balance between generality and specificity. A lower \verb|min_confidence| value may lead to the generation of more rules, providing a comprehensive view of potential associations. This can be valuable for exploratory data analysis and gaining insights into customer behavior. In association rule mining, there is often a trade-off between support and confidence. A lower \verb|min_confidence| allows for the identification of rules with lower confidence but higher support, potentially revealing more common but weaker associations. Given the moderate size of our dataset (1000 transactions), a lower \verb|min_confidence| allows for a more exploratory analysis without excluding potentially interesting rules.
+
+\subsection{The obtained association rules}
+The result is a DataFrame (rules) containing association rules with information such as antecedent, consequent, support, confidence, and lift. We have already talked about support, confidence, antecedents, and consequents. But what is lift?
+\subsubsection{Lift}
+Lift is a measure of the strength of association between the antecedent and consequent in a rule. It quantifies how much more likely the occurrence of the antecedent and consequent together is compared to their independent occurrences. A lift value greater than 1 indicates a positive association, while a value less than 1 indicates a negative association.
+\begin{equation}
+\text{Lift}(A \rightarrow B) = \frac{\text{Support}(A \cup B)}{\text{Support}(A) \times \text{Support}(B)}
+\end{equation}
+
+\subsubsection{Leverage}
+Leverage measures the deviation between the observed support of the combined antecedent and consequent and the expected support under independence. It assesses whether the co-occurrence of the antecedent and consequent is frequent than expected if they were independent.
+
+\begin{equation}
+\text{Leverage}(A \rightarrow B) = \text{Support}(A \cup B) - \text{Support}(A) \times \text{Support}(B)
+\end{equation}
+
+\subsubsection{The obtained association rules:}
+
+\begin{table}[htbp]
+    \centering
+    \rowcolors{1}{pink!50}{white}
+    \adjustbox{max width=\textwidth}{
+    \begin{tabular}{|>{\columncolor{pink!80}}c|c|c|c|c|c|c|c|}
+        \hline
+        \rowcolor{pink!80}
+        \textbf{Antecedents} & \textbf{Consequents} & \textbf{Antecedent Support} & \textbf{Consequents Support} & \textbf{Support} & \textbf{Confidence} & \textbf{Lift} & \textbf{Leverage} \\
+        \hline
+        (beverages) & (Food) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        (Food) & (beverages) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        (Health) & (beauty) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        (beauty) & (Health) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        (Home) & (lifestyle) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        (lifestyle) & (Home) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        (travel) & (Sports) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        (Sports) & (travel) & 0.166667 & 0.166667 & 0.166667 & 1.0 & 6.0 & 0.138889 \\
+        \hline
+    \end{tabular}
+    }
+    % \caption{there were no duplicates or outliers}
+    \label{tab:pink_colors_fit}
+\end{table}
+The provided association rules demonstrate compelling patterns within the dataset, showcasing a perfect confidence of 1.0 across various antecedent and consequent pairs, such as (beverages, Food), (Health, beauty), (Home, lifestyle), and (travel, Sports). The high lift values of 6.0 indicate positive associations, signifying that the occurrence of the antecedent significantly increases the likelihood of the consequent compared to their independent occurrences. The consistent leverage values of 0.138889 confirm a positive difference between observed and expected co-occurrences. These findings reveal strong relationships between specific product lines.
+
+
+

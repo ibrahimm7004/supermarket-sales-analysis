@@ -1,0 +1,280 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thesis / Project Report
+% LaTeX Template
+% Version 2.0 (08/04/16)
+%
+% Author:
+% Parth Ganeriwala
+% https://github.com/ParthGaneriwala/BITS-Thesis-Template-Latex
+%
+% This template is heavily based on the work of Siddhant Shrivastava, Darshit Shah, Steven Gunn and Sunil Patel
+% Siddhant Shrivastava
+% https://github.com/sidcode/bits-pilani-thesis-template-latex
+% Darshit Shah
+% https://github.com/darnir/BPHC-LaTeX-Report-Class
+% Steven Gunn
+% http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/
+% and
+% Sunil Patel
+% http://www.sunilpatel.co.uk/thesis-template/
+%
+% License:
+% CC BY-NC-SA 4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+% Note:
+% Make sure to edit document variables in the Thesis.cls file
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+
+%-------------------------------------------------------------------------------
+
+\documentclass[11pt, a4paper, oneside]{Thesis} % Paper size, default font size
+                                               % and one-sided paper
+
+ \graphicspath{Pictures/bits-logo.pdf} % Specifies the directory where pictures are stored
+  % \includegraphics[width=0.5\textwidth]{Pictures/bits-logo.pdf}
+% \usepackage[backend=bibtex]{biblatex}
+% \bibliography{Bibliography.bib}
+
+
+
+\title{\ttitle} % Defines the thesis title - don't touch this
+
+%add packages over here 
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{adjustbox}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{lipsum}
+% \usepackage[backend=biber,style=numeric]{biblatex} % Use biber backend for biblatex
+\usepackage{hyperref} % Load hyperref for handling hyperlinks
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{Bibliography.bib} % Ensure this matches the name of your .bib file
+
+\begin{document}
+
+\frontmatter % Use roman numbering style (i, ii...) for the pre-content pages
+
+\setstretch{1.3} % Line spacing of 1.3
+
+% Define page headers using FancyHdr package and set up for one-sided printing
+\fancyhead{} % Clears all page headers and footers
+\rhead{\thepage} % Sets the right side header to show the page number
+\lhead{} % Clears the left side page header
+
+\pagestyle{fancy} % Finally, use the "fancy" page style to implement the
+                  %FancyHdr headers
+
+% Input all the variables used in the document. Please fill out the
+% variables.tex file with all your details.
+% \input{variables}
+% -------------------------------------------------------------------------------
+%   NON-CONTENT PAGES
+%-------------------------------------------------------------------------------
+% \maketitle
+
+% \Declaration
+
+% \Certificate
+
+% \Quotation{Insert Random Quote here. Publish like a boss.}{Your Name}
+
+\begin{abstract}
+This project navigates the supermarket sales spectrum using Python and data mining techniques. Key aspects include association rule mining, classification, regression, and outlier detection. Beyond conventional analyses, it explores temporal patterns in customer behavior, utilizing sequential pattern mining and tracking changes in item sets over time. The investigation extends to clustering algorithms for grouping customers based on purchase history. The project offers concise insights into customer behavior regarding the Supermarket Sales dataset.
+
+\end{abstract}
+
+% % \begin{acknowledgements}
+
+% The acknowledgements and the people to thank go here, don't forget to include your project advisor and friends\ldots
+
+% \vspace{2cm}
+% Signed:\\
+% \rule[1em]{25em}{0.5pt} % This prints a line for the signature
+
+% \authornames\\
+% \end{acknowledgements}
+
+%-------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%-------------------------------------------------------------------------------
+
+% The page style headers have been "empty" all this time, now use the "fancy"
+% headers as defined before to bring them back
+\pagestyle{fancy}
+
+\lhead{\emph{Contents}} % Set the left side page header to "Contents"
+\tableofcontents % Write out the Table of Contents
+
+% Set the left side page header to "List of Figures"
+% \lhead{\emph{List of Figures}}
+% \listoffigures % Write out the List of Figures
+
+%  % Set the left side page header to "List of Tables"
+% \lhead{\emph{List of Tables}}
+% \listoftables % Write out the List of Tables
+
+%-------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%-------------------------------------------------------------------------------
+
+% \clearpage % Start a new page
+
+ % Set the line spacing to 1.5, this makes the following tables easier to read
+% \setstretch{1.5}
+
+% \lhead{\emph{Abbreviations}} % Set the left side page header to "Abbreviations"
+% \listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
+% {
+% \textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
+%\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+% }
+
+%-------------------------------------------------------------------------------
+%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
+%-------------------------------------------------------------------------------
+
+% \clearpage % Start a new page
+
+% % Set the left side page header to "Physical Constants"
+% \lhead{\emph{Physical Constants}}
+
+%  % Include a list of Physical Constants (a four column table)
+% \listofconstants{lrcl}
+% {
+% Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
+% % Constant Name & Symbol & = & Constant Value (with units) \\
+% }
+
+%-------------------------------------------------------------------------------
+%	SYMBOLS
+%-------------------------------------------------------------------------------
+
+% \clearpage % Start a new page
+
+% \lhead{\emph{Glossary}} % Set the left side page header to "Symbols"
+
+% \listofnomenclature % List the nomenclature. (We use the glossaries package)
+
+%-------------------------------------------------------------------------------
+%	DEDICATION
+%------------------------------------------------------------------------------
+
+% \setstretch{1.3} % Return the line spacing back to 1.3
+
+% \pagestyle{empty} % Page style needs to be empty for this page
+
+% Dedication text
+% \Dedicatory{Dedicate this to someone, anyone.}
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+%-------------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%-------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{fancy} % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+\input{Chapters/Chapter1}
+\input{Chapters/Chapter2}
+\input{Chapters/Chapter3}
+\input{Chapters/Chapter4}
+\input{Chapters/Chapter5}
+\input{Chapters/Chapter6}
+\input{Chapters/Chapter7}
+\input{Chapters/Chapter8}
+\input{Chapters/Chapter9}
+\input{Chapters/Chapter10}
+\input{Chapters/Chapter11}
+
+
+%-------------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%-------------------------------------------------------------------------------
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+% \appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices
+% folder
+% Uncomment the lines as you write the Appendices
+
+% \input{Appendices/AppendixA}
+%\input{Appendices/AppendixB}
+%\input{Appendices/AppendixC}
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\backmatter
+
+%-------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%-------------------------------------------------------------------------------
+
+
+
+% \documentclass{article}
+
+% \addbibresource{Bibliography.bib} % references.bib is the file name
+
+% \begin{document}
+
+
+\chapter{References}
+Here are some references to various documents and articles:
+
+\begin{itemize}
+  \item \href{https://pandas.pydata.org/pandas-docs/stable/}{Pandas Documentation} \cite{pandas}
+  \item \href{https://scikit-learn.org/stable/}{Scikit-Learn Documentation} \cite{scikit-learn}
+  \item \href{https://numpy.org/doc/stable/}{NumPy Documentation} \cite{numpy}
+  \item \href{https://matplotlib.org/stable/contents.html}{Matplotlib Documentation} \cite{matplotlib}
+  \item \href{https://seaborn.pydata.org/}{Seaborn Documentation} \cite{seaborn}
+  \item \href{https://openai.com/chatgpt}{OpenAI ChatGPT} \cite{chatgpt}
+  \item \href{https://bard.google.com/}{Google Bard} \cite{google_bard}
+  \item \href{https://www.geeksforgeeks.org/interquartile-range-to-detect-outliers-in-data/}{Outliers Detection with IQR} \cite{iqr_outliers}
+  \item \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html}{Scipy Hierarchical Clustering} \cite{scipy_hierarchical_clustering}
+  \item \href{https://towardsdatascience.com/understanding-boxplots-5e2df7bcbd51}{Understanding Boxplots} \cite{boxplots}
+  \item \href{https://pymining.readthedocs.io/en/latest/index.html}{Pymining Documentation} \cite{pymining}
+  \item \href{https://en.wikipedia.org/wiki/Sequential_Pattern_Mining}{Generalized Sequential Pattern (GSP) Algorithm} \cite{gsp_algorithm}
+  \item \href{https://dl.acm.org/doi/10.1145/223784.223791}{Mining Sequential Patterns} \cite{agrawal1995mining}
+  \item \href{https://www.geeksforgeeks.org/sequential-pattern-mining/}{Sequential Pattern Mining} \cite{sequential_pattern_mining}
+  \item \href{https://en.wikipedia.org/wiki/Hierarchical_clustering#Agglomerative_hierarchical_clustering}{Agglomerative hierarchical clustering} \cite{agglomerative_clustering}
+  \item \href{https://en.wikipedia.org/wiki/K-means_clustering}{K-means clustering} \cite{k_means}
+  \item \href{https://en.wikipedia.org/wiki/K-medians_clustering}{K-medians clustering} \cite{k_medians}
+  \item \href{https://en.wikipedia.org/wiki/Interquartile_range}{Interquartile Range (IQR) Method} \cite{iqr_method}
+  \item \href{https://cs.nju.edu.cn/zhouzh/zhouzh.files/publication/icdm08b.pdf}{Isolation Forest} \cite{liu2008isolation}
+  \item \href{https://en.wikipedia.org/wiki/DBSCAN}{DBSCAN} \cite{dbscan}
+  \item \href{https://en.wikipedia.org/wiki/Mean_shift}{Mean shift} \cite{mean_shift}
+  \item \href{https://www.borgelt.net/prefixspan/prefixspan.pdf}{PrefixSpan Documentation} \cite{prefixspan}
+  \item \href{https://en.wikipedia.org/wiki/Principal_component_analysis}{Principal Component Analysis (PCA)} \cite{pca}
+  \item \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{Principal Component Analysis (PCA) - sklearn Documentation} \cite{pca_sklearn}
+  \item \href{https://en.wikipedia.org/wiki/Apriori_algorithm}{Apriori Algorithm} \cite{apriori}
+  \item \href{https://en.wikipedia.org/wiki/FP-growth}{FP-Growth Algorithm} \cite{fp_growth}
+\end{itemize}
+
+\printbibliography
+
+
+\end{document}
+
+
+\end{document}
+
