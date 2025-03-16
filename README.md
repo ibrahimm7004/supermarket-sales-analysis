@@ -67,66 +67,69 @@ The table below highlights the most significant association rules discovered.
 
 ![Association Rules](additional_files/images/image3.png)
 
-**Key Findings:**
-
-- Confidence values of **1.0** indicate strong certainty in customer purchasing behavior.
-- A lift value of **6.0** suggests that purchasing one item significantly increases the likelihood of buying the associated item.
-- These insights help optimize marketing strategies and personalized recommendations.
-
 ### **4. Comparative Analysis with FP-Growth Algorithm**
 
 #### **Execution Time Comparison**
 
-A comparison between Apriori and FP-Growth algorithms was conducted to analyze their efficiency. The table below presents the total execution time, time taken for frequent itemset generation, and association rule mining.
-
 ![Execution Time Table](additional_files/images/image4.png)
-
-```python
-start_time_apriori = time.time()
-frequent_itemsets_apriori = apriori(encoded_df, min_support=0.01, use_colnames=True)
-rules_apriori = association_rules(frequent_itemsets_apriori, metric="confidence", min_threshold=0.01)
-end_time_apriori = time.time()
-apriori1 = end_time_apriori - start_time_apriori
-```
-
-To compare the times of both algorithms, a DataFrame was created:
-
-```python
-execution_times_df = pd.DataFrame(columns=['Algorithm', 'Total', 'Itemsets', 'Rules'])
-apriori_df = pd.DataFrame({'Algorithm': ['Apriori'], 'Total': [apriori1], 'Itemsets': [apriori2], 'Rules': [apriori3]})
-fp_growth_df = pd.DataFrame({'Algorithm': ['FP Growth'], 'Total': [fp1], 'Itemsets': [fp2], 'Rules': [fp3]})
-execution_times_df = pd.concat([execution_times_df, apriori_df, fp_growth_df], ignore_index=True)
-execution_times_df
-```
-
-The comparison of execution times was also visualized:
-
-![Execution Time Comparison](additional_files/images/image5.png)
 
 #### **Memory Usage Comparison**
 
-Both Apriori and FP-Growth algorithms were analyzed for their memory usage. The tables below show memory consumption for both approaches.
-
 ![Memory Usage](additional_files/images/image6.png)
 
-A profiling script was used to track memory usage:
+### **5. Time-Series Analysis and Forecasting**
+
+#### **Seasonal Decomposition**
+
+Using the `seasonal_decompose` function, the time-series data was broken down into key components: trend, seasonality, and residual.
+
+![Seasonal Decomposition](additional_files/images/image7.png)
 
 ```python
-@profile
-def apriori_algorithm(encoded_df):
-    start_mem_apriori = time.time()
-    frequent_itemsets_apriori = apriori(encoded_df, min_support=0.01, use_colnames=True)
-    rules_apriori = association_rules(frequent_itemsets_apriori, metric="confidence", min_threshold=0.01)
-    end_mem_apriori = time.time()
-    apriori1_mem = end_mem_apriori - start_mem_apriori
-    print(apriori1_mem)
+scaler = StandardScaler()
+numerical_cols = ['Unit price', 'Quantity', 'Tax 5%', 'Total', 'cogs', 'gross income', 'Rating']
+df5[numerical_cols] = scaler.fit_transform(df5[numerical_cols])
+
+result = seasonal_decompose(df5['Total'], model='additive', period=12)
 ```
 
-#### **Key Findings:**
+- **Observed Component:** Captures fluctuations in the original time series.
+- **Trend Component:** Highlights long-term patterns in sales.
+- **Seasonal Component:** Identifies repeating seasonal trends.
+- **Residual Component:** Shows remaining variability after extracting trend and seasonality.
 
-- **FP-Growth is significantly faster** than Apriori, requiring fewer computations for large datasets.
-- **Memory usage is more efficient** in FP-Growth, making it suitable for large-scale applications.
-- While Apriori is easier to understand, FP-Growth is more scalable and optimized.
+#### **Predictive Modeling Using ARIMA**
+
+ARIMA (AutoRegressive Integrated Moving Average) was applied to forecast future sales trends.
+
+![ARIMA Forecast](additional_files/images/image8.png)
+
+```python
+model = ARIMA(df5['Total'], order=(1, 1, 1))
+result = model.fit()
+
+# Generate forecast for the next 5 time points
+forecast_steps = 5
+forecast = result.get_forecast(steps=forecast_steps).predicted_mean
+```
+
+**Key Insights:**
+
+- ARIMA effectively captures historical patterns to predict future sales.
+- The model suggests a stable or slow-changing trend in customer behavior.
+
+#### **Rolling Mean for Trend Analysis**
+
+To smooth out short-term fluctuations and highlight long-term trends, a rolling mean was calculated.
+
+```python
+df5['Total_Rolling_Mean'] = df5['Total'].rolling(window=3).mean()
+```
+
+![Rolling Mean Analysis](additional_files/images/image9.png)
+
+- **Frequent fluctuations in total sales** are observed, likely influenced by daily transactions.
+- The rolling mean smooths out these fluctuations to provide a clearer trend.
 
 ## Conclusion
 
